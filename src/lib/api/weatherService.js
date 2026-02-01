@@ -47,3 +47,31 @@ function getWeatherDescription(type) {
   };
   return descriptions[type] || "variable";
 }
+
+export async function fetchCitySuggestions(query) {
+  if (query.length < 2) return [];
+
+  const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
+  const BASE_URL = "https://api.openweathermap.org/geo/1.0/direct";
+
+  try {
+    const response = await fetch(
+      `${BASE_URL}?q=${query}&limit=5&appid=${API_KEY}`,
+    );
+
+    if (!response.ok) return [];
+
+    const data = await response.json();
+    return data.map((city) => ({
+      name: city.name,
+      country: city.country,
+      state: city.state || "",
+      displayName: city.state
+        ? `${city.name}, ${city.state} (${city.country})`
+        : `${city.name} (${city.country})`,
+    }));
+  } catch (err) {
+    console.error("Erreur lors de la récupération des suggestions:", err);
+    return [];
+  }
+}

@@ -15,9 +15,13 @@ export default function WeatherApp() {
     loading,
     error,
     searchInput,
-    setSearchInput,
     handleSearch,
     retryFetch,
+    suggestions,
+    showSuggestions,
+    setShowSuggestions,
+    handleInputChange,
+    handleSelectSuggestion,
   } = useWeather();
 
   if (loading) {
@@ -37,8 +41,12 @@ export default function WeatherApp() {
 
         <SearchBar
           searchInput={searchInput}
-          setSearchInput={setSearchInput}
+          onInputChange={handleInputChange}
           onSubmit={handleSearch}
+          suggestions={suggestions}
+          showSuggestions={showSuggestions}
+          onSelectSuggestion={handleSelectSuggestion}
+          setShowSuggestions={setShowSuggestions}
         />
 
         <WeatherCard weather={weather} />
