@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import { useWeather } from "../../hooks/useWeather";
 import Header from "../ui/Header";
 import SearchBar from "../ui/SearchBar";
@@ -8,6 +9,7 @@ import Footer from "../ui/Footer";
 import LoadingState from "../ui/LoadingState";
 import ErrorState from "../ui/ErrorState";
 import { getBackgroundGradient } from "../../lib/utils/helpers";
+import { updateFaviconByWeather } from "../../lib/utils/faviconUtils";
 
 export default function WeatherApp() {
   const {
@@ -23,6 +25,12 @@ export default function WeatherApp() {
     handleInputChange,
     handleSelectSuggestion,
   } = useWeather();
+
+  useEffect(() => {
+    if (weather) {
+      updateFaviconByWeather(weather);
+    }
+  }, [weather]);
 
   if (loading) {
     return <LoadingState />;
